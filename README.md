@@ -16,4 +16,4 @@ npm run start
 ```
 ---
 
-Please feel free to suggest improvements on [issues](https://github.com/mattcam/tfjs_xor_example/issues)
+Please feel free to suggest improvements on [issues](https://github.com/influencerTips/inf-client-samrentsch/issues)
