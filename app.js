@@ -24,7 +24,7 @@ async.series([
   },
 
   function(_callback) {
-    var acceptedNames = _.uniq(results, function(item) { return item.Name; });
+    var acceptedNames = _.pluck(_.uniq(results, function(item) { return item.Name; }),'Name');
     console.log('acceptedNames ',acceptedNames);
     console.log('acceptedNames.length ',acceptedNames.length);
     console.log('results.length ',results.length);
