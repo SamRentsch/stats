@@ -1,6 +1,7 @@
 var _ = require('underscore');
 var async = require('async');
 var csv = require('csvtojson');
+require('dotenv').load()
 
 var stocks=[];
 var results=[];
@@ -17,7 +18,8 @@ async.series([
   },
 
   function(_callback) {
-    var rejects = _.filter(stocks, function(item) { return item.close < 200 })
+    console.log('process.env.REJECT_BELOW ',process.env.REJECT_BELOW);
+    var rejects = _.filter(stocks, function(item) { return item.close < parseInt(process.env.REJECT_BELOW) })
     var rejectedNames = _.uniq(rejects, function(item) { return item.Name; });
     results = _.reject(stocks,function(item){return _.find(rejectedNames,{Name: item.Name});});
     _callback(null,'app-debug');
