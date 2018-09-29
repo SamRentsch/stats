@@ -1,6 +1,7 @@
 var _ = require('underscore');
 var async = require('async');
 var csv = require('csvtojson');
+var tulind = require('tulind');
 require('dotenv').load()
 
 var stocks=[];
@@ -25,7 +26,28 @@ async.series([
   },
 
   function(_callback) {
+    var closes = _.map(results,function(item){return item.close;})
+    tulind.indicators.sma.indicator([closes], [process.env.SMA_CLOSE], function(err, smaCloses) {
+      var previous=0;
+      _.each(results,function(item,iteratee){
+        if (iteratee >= parseInt(process.env.SMA_CLOSE) ) {
+          item.smaClose=Math.round(smaCloses[0][(iteratee-parseInt(process.env.SMA_CLOSE))]);
+          if (item.smaClose === previous)
+            item.smaCloseStatus=0;
+          else if (item.smaClose > previous)
+            item.smaCloseStatus=1;
+            else if (item.smaClose < previous)
+              item.smaCloseStatus=-1;
+          previous=item.smaClose;
+        }
+      })
+      _callback(null,'app-sma-close');
+    });
+  },
+
+  function(_callback) {
     var acceptedNames = _.pluck(_.uniq(results, function(item) { return item.Name; }),'Name');
+    console.log('last item in results ',results[(results.length-1)]);
     console.log('acceptedNames ',acceptedNames);
     console.log('acceptedNames.length ',acceptedNames.length);
     console.log('results.length ',results.length);

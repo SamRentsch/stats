@@ -16,11 +16,13 @@ App requires the following environment variables:
 
 ```
 REJECT_BELOW=ValueToReject
+SMA_CLOSE=ValueOfCloseSMA
 ```
 
 Notes:
 
 * **REJECT_BELOW** is used to filter stocks that have not closed above a certain amount. **ValueToReject** is the amount to filter on. For example `REJECT_BELOW=200` would filter all stocks that have closed below $200.00.
+* **SMA_CLOSE** is used to define the value of the simple moving average (SMA) applied to the close price. **ValueOfCloseSMA** is the value used. For exmple `SMA_CLOSE=6`.
 
 ## Usage
 

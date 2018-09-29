@@ -20,6 +20,7 @@
     "async": "^2.6.1",
     "csvtojson": "^2.0.8",
     "dotenv": "^6.0.0",
+    "tulind": "^0.8.13",
     "underscore": "^1.9.1"
   }
 }
