@@ -22,7 +22,7 @@ async.series([
     var rejects = _.filter(stocks, function(item) { return item.close < parseInt(process.env.REJECT_BELOW) })
     var rejectedNames = _.uniq(rejects, function(item) { return item.Name; });
     results = _.reject(stocks,function(item){return _.find(rejectedNames,{Name: item.Name});});
-    _callback(null,'app-debug');
+    _callback(null,'app-filter-on-REJECT_BELOW');
   },
 
   function(_callback) {
