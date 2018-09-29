@@ -2,10 +2,13 @@ var _ = require('underscore');
 var async = require('async');
 var csv = require('csvtojson');
 var tulind = require('tulind');
+var tf = require('@tensorflow/tfjs');
+var Normalizer = require('neural-data-normalizer/dist/src/normalizer.js');
 require('dotenv').load()
 
 var stocks=[];
 var results=[];
+var features=[];
 
 async.series([
 
@@ -44,6 +47,62 @@ async.series([
       _callback(null,'app-sma-close');
     });
   },
+
+  function(_callback) {
+    features=[];
+    async.each(results, function(item, done) {
+      var result={};
+      if ( typeof item.smaCloseStatus !== 'undefined') {
+        result.smaCloseStatus=item.smaCloseStatus;
+        result.isRecommended = true;
+        features.push(result);
+      }
+      done();
+    }, function(err) {
+      _callback(null,'app-get-features');
+    });
+  },
+
+  function(_callback) {
+
+    var normalizer = new Normalizer.Normalizer(features);
+     normalizer.setOutputProperties(['isRecommended']);
+     normalizer.normalize();
+     var metadata = normalizer.getDatasetMetaData();
+     var inputs = normalizer.getBinaryInputDataset();
+     var outputs = normalizer.getBinaryOutputDataset();
+
+     var trainingData = [];
+     for(var i = 0;i < outputs.length; i++) {
+       trainingData.push({
+          input: inputs[i],
+          output: outputs[i]
+       });
+     };
+
+     const model = tf.sequential();
+     model.add(tf.layers.dense({units: 10, activation: 'sigmoid',inputShape: [inputs[0].length]}));
+     model.add(tf.layers.dense({units: 3, activation: 'sigmoid',inputShape: [10]}));
+     model.add(tf.layers.dense({units: 1, activation: 'sigmoid',inputShape: [3]}));
+     model.compile({loss: 'meanSquaredError', optimizer: 'rmsprop'});
+
+     const training_data = tf.tensor2d(_.pluck(trainingData,'input'));
+     const target_data = tf.tensor2d(_.pluck(trainingData,'output'));
+
+     async function go() {
+        var h = await model.fit(training_data, target_data, {batchSize:32, epochs: 250});
+        var loss = h.history.loss[0]
+        console.log(loss);
+
+        model.predict(tf.tensor2d([[0],[0.5],[1]])).print();
+
+        _callback(null,'app-predict');
+      }
+      go();
+
+
+  },
+
 
   function(_callback) {
     var acceptedNames = _.pluck(_.uniq(results, function(item) { return item.Name; }),'Name');

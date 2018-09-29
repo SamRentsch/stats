@@ -17,9 +17,11 @@
   },
   "homepage": "https://github.com/influencerTips/inf-client-samrentsch#readme",
   "dependencies": {
+    "@tensorflow/tfjs": "^0.13.1",
     "async": "^2.6.1",
     "csvtojson": "^2.0.8",
     "dotenv": "^6.0.0",
+    "neural-data-normalizer": "^1.0.0",
     "tulind": "^0.8.13",
     "underscore": "^1.9.1"
   }
