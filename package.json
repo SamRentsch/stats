@@ -1,5 +1,5 @@
 {
-  "name": "inf-client-samrentsch",
+  "name": "stats",
   "version": "1.0.0",
   "description": "share data analysis",
   "main": "app.js",
@@ -8,14 +8,11 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/influencerTips/inf-client-samrentsch.git"
+    "url": "git+https://github.com/SamRentsch/stats/.git"
   },
-  "author": "mattcam",
+  "author": "SamRentsch",
   "license": "ISC",
-  "bugs": {
-    "url": "https://github.com/influencerTips/inf-client-samrentsch/issues"
-  },
-  "homepage": "https://github.com/influencerTips/inf-client-samrentsch#readme",
+  "homepage": "https://github.com/SamRentsch/stats/#readme",
   "dependencies": {
     "@tensorflow/tfjs": "^0.13.1",
     "async": "^2.6.1",
