@@ -1,4 +1,4 @@
-# inf-client-samrentsch
+# stats
 
 > share data analysis
 
@@ -32,4 +32,3 @@ npm run start
 ```
 ---
 
-Please feel free to suggest improvements on [issues](https://github.com/influencerTips/inf-client-samrentsch/issues)
